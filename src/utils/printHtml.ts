@@ -83,7 +83,11 @@ export function printHeaderHTML(data: TimetableData, title: string): string {
 }
 
 /* ---------- Whole School table ---------- */
-export function wholeSchoolHTML(data: TimetableData): string {
+export function wholeSchoolHTML(
+  data: TimetableData,
+  classes: ClassItem[] = data.classes,
+  titleOverride?: string
+): string {
   const headRow = `
     <tr>
       <th style="width:10%">Class</th>
@@ -93,7 +97,7 @@ export function wholeSchoolHTML(data: TimetableData): string {
   `;
 
   let lastSection: string | null = null;
-  const bodyRows = data.classes.map((c, ci) => {
+  const bodyRows = classes.map((c) => {
     let sectionRow = '';
     if (c[2] && c[2] !== lastSection) {
       sectionRow = `<tr class="sectionrow"><td colspan="${2 + data.periods.length}"><b>${esc(c[2])} Section</b></td></tr>`;
@@ -127,7 +131,7 @@ export function wholeSchoolHTML(data: TimetableData): string {
 
   return `
     <div class="print-sheet fixed-sheet wide-sheet">
-      ${printHeaderHTML(data, data.wholeTitle || 'Whole School Timetable')}
+      ${printHeaderHTML(data, titleOverride || data.wholeTitle || 'Whole School Timetable')}
       <div class="sheet-body">
         <table class="fill">
           <thead>${headRow}</thead>
@@ -143,8 +147,9 @@ export function allTeachersHTML(
   data: TimetableData,
   teacherPeriodSummary: (t: string, pi: number) => string
 ): string {
+  // "Hide empty teachers" keeps anyone who teaches at least one period (not just period 1)
   const teacherList = data.hideEmptyTeachersInTT
-    ? data.teachers.filter(t => teacherPeriodSummary(t, 0) !== 'Free' || data.teachers.length === 1)
+    ? data.teachers.filter(t => data.periods.some((_, pi) => teacherPeriodSummary(t, pi) !== 'Free'))
     : data.teachers;
 
   const headRow = `
