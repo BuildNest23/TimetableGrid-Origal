@@ -52,11 +52,20 @@ export const PrintingView: React.FC = () => {
       alert('No sections set. Add a Section (High / Middle) to your classes first.');
       return;
     }
-    const html = sections.map(section => {
-      const filtered = data.classes.filter(c => (c[2] || '').trim() === section);
-      return filtered.map(c => classWiseHTML(data, c)).join('');
-    }).join('');
-    triggerPrint(html, opts);
+    // One whole-section table per section (all its classes together), one section per page
+    const baseTitle = data.wholeTitle || 'Whole School Timetable';
+    const pages = sections.map(section =>
+      wholeSchoolHTML(
+        data,
+        data.classes.filter(c => (c[2] || '').trim() === section),
+        `${baseTitle} — ${section} Section`
+      )
+    );
+    const unsectioned = data.classes.filter(c => !(c[2] || '').trim());
+    if (unsectioned.length) {
+      pages.push(wholeSchoolHTML(data, unsectioned, `${baseTitle} — Other Classes`));
+    }
+    triggerPrint(pages.join(''), opts);
   };
 
   const handlePrintSchoolTimings = () => {
