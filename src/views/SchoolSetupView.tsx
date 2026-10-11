@@ -876,7 +876,7 @@ export const SchoolSetupView: React.FC<SchoolSetupViewProps> = ({ onNavigate }) 
               type="text"
               value={printNote}
               onChange={(e) => setPrintNote(e.target.value)}
-              placeholder="e.g. Principal: M. Jalees"
+              placeholder="e.g. Principal: Name Surname"
               className="w-full px-3.5 py-2.5 bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-700 rounded-xl text-sm font-semibold text-stone-900 dark:text-stone-100 focus:outline-hidden focus:ring-2 focus:ring-emerald-600"
             />
           </div>
