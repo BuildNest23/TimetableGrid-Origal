@@ -113,7 +113,7 @@ export const VIEW_SIZES: Record<string, { mult: number; label: string }> = {
 export const DEMO_TIMETABLE_DATA: TimetableData = {
   schoolName: "Government High School",
   academicYear: "2026-2027",
-  printNote: "Principal: M. Jalees",
+  printNote: "Principal: Name Surname",
   wholeTitle: "Whole School Timetable",
   allTeachersTitle: "All Teachers Timetable",
   periods: [1, 2, 3, 4, 5, 6, 7, 8],
